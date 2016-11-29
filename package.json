@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "React and Redux class files",
   "scripts": {
-		"postinstall": "npm start",
     "start": "npm run clean && npm run webpack && concurrently \"npm run webpack:w\" \"npm run web\" \"npm run rest\"",
     "clean": "rimraf dist",
     "web": "browser-sync start -c ./config.browsersync.js",
