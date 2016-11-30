@@ -21,7 +21,7 @@ Breaks:
 
 - Day 1 - Overview of React, JSX, Props, State, Component Composition
 - Day 2 - Forms, Overview of Flux, Overview of Redux, Reducers, Immutable Programming
-- Day 3 - React & Redux, Asynchronous Programming, React Router
+- Day 3 - React & Redux, Asynchronous Programming 
 
 ## Links
 
