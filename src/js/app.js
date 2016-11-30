@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class HelloWorldComponent extends React.Component {
+class HelloWorld extends React.Component {
 
 	render() {
 		return <h1>Hello World!</h1>;
@@ -9,4 +9,4 @@ class HelloWorldComponent extends React.Component {
 
 }
 
-ReactDOM.render(<HelloWorldComponent />, document.querySelector('my-app'));
+ReactDOM.render(<HelloWorld />, document.querySelector('my-app'));
