@@ -1,12 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class HelloWorld extends React.Component {
+class ColorTool extends React.Component {
 
 	render() {
-		return <h1>Hello World!</h1>;
-	}
+		
 
+		//console.log(Object.isFrozen(this.props));
+		//this.props.toolHeader = 'New Tool Header';
+		//this.props.almostTimeForLunch = true;
+
+		return <div>
+			<header>
+				<h1>{this.props.toolHeader}</h1>
+			</header>
+			<ul>
+				{this.props.colors.map(color => <li>{color}</li>)}
+			</ul>
+		</div>;
+	}
 }
 
-ReactDOM.render(<HelloWorld />, document.querySelector('my-app'));
+const colorList = ['red!','gold','green','white','black','blue','saffron'];
+
+ReactDOM.render(<ColorTool colors={colorList} toolHeader="Color List!!!" />, document.querySelector('my-app'));
+
+
