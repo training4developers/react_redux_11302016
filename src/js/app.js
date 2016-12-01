@@ -1,113 +1,90 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class ColorHeader extends React.Component {
+class ColorEditListItem extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = this.createState(props);
+	}
+
+	createState(props) {
+		return {
+			color: props.color
+		};
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log('getting new props');
+		console.dir(arguments);
+
+		this.setState(this.createState(nextProps));
+	}
+
+	onChange = e => {
+		this.setState({
+			color: e.target.value
+		});
+	};
+
+	render() {
+		return <li>
+			<input type="text" onChange={this.onChange} value={this.state.color} />
+		</li>;
+	}
+
+}
+
+ColorEditListItem.propTypes = {
+	color: React.PropTypes.string
+};
+
+class ColorList extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			colors: this.props.colors.concat()
+		};
+	}
+
+	componentDidMount() {
+
+		setTimeout(() => {
+			this.setState({
+				colors: this.state.colors.slice(1)
+			});
+		}, 3000);
+
+	}
 
 	render() {
 
-		return <header>
-			<h1>{this.props.toolHeader}</h1>
-		</header>;
+		// no key, and the element is not mapped to the data which cause problems
+		// for state values in child components
+		// index key, is the same as no key, but the message goes away
+		// key should be a unique value from the data, and causes the data to
+		// to be linked to the element
+
+		return <ul>
+			{this.state.colors.map((color, index) => <ColorEditListItem key={index} color={color} />)}
+		</ul>;
 
 	}
+
 }
-
-ColorHeader.propTypes = {
-	toolHeader: React.PropTypes.string
-};
-
-const ColorList = props => <ul>
-	{props.colors.map(color => <li>{color}</li>)}
-</ul>;
 
 ColorList.propTypes = {
 	colors: React.PropTypes.array
 };
 
-class EditComponent extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.onChange = this.onChange.bind(this);
-	}
 
-	onChange(e) {
-		this.setState({
-			[e.target.name]: e.target.value
-		});
-	}
-}
+const colorList = ['red','gold','green','white','black','blue','saffron'];
 
-class ColorForm extends EditComponent { 
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			newColor: ''
-		};
-
-		this.onClick = this.onClick.bind(this);
-	}
-
-	onClick() {
-		this.props.onNewColor(this.state.newColor);
-
-		this.setState({
-			newColor: ''
-		});
-	}
-
-	render() {
-		return <form>
-			<label htmlFor="new-color">New Color:</label>
-			<input type="text" id="new-color" name="newColor" onChange={this.onChange} value={this.state.newColor} />
-			<button type="button" onClick={this.onClick} className="btn btn-primary">Add Color</button>
-		</form>;
-	}
-}
-
-class ColorTool extends React.Component {
-
-	constructor(props) {
-
-		super(props);
-
-		this.state = {
-			colors: props.colors.concat()
-		};
-
-		this.onNewColor = this.onNewColor.bind(this);
-	}
-
-	onNewColor(newColor) {
-		this.setState({
-			colors: this.state.colors.concat(newColor)
-		});
-	}
-
-	render() {
-		return <div>
-			<ColorHeader toolHeader={this.props.toolHeader} />
-			<ColorList colors={this.state.colors} />
-			<ColorForm onNewColor={this.onNewColor} />
-		</div>;
-	}
-}
-
-ColorTool.defaultProps = {
-	toolHeader: 'Color List!',
-	colors: []
-};
-
-ColorTool.propTypes = {
-	toolHeader: React.PropTypes.string.isRequired,
-	colors: React.PropTypes.array
-};
-
-const colorList = ['red!','gold','green','white','black','blue','saffron'];
-
-ReactDOM.render(<ColorTool colors={colorList} />, document.querySelector('my-app'));
+ReactDOM.render(<ColorList colors={colorList} />, document.querySelector('my-app'));
 
 
 
