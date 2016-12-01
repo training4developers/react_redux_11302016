@@ -16,6 +16,57 @@ ColorHeader.propTypes = {
 	toolHeader: React.PropTypes.string
 };
 
+const ColorList = props => <ul>
+	{props.colors.map(color => <li>{color}</li>)}
+</ul>;
+
+ColorList.propTypes = {
+	colors: React.PropTypes.array
+};
+
+class EditComponent extends React.Component {
+
+	constructor(props) {
+		super(props);
+		this.onChange = this.onChange.bind(this);
+	}
+
+	onChange(e) {
+		this.setState({
+			[e.target.name]: e.target.value
+		});
+	}
+}
+
+class ColorForm extends EditComponent { 
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			newColor: ''
+		};
+
+		this.onClick = this.onClick.bind(this);
+	}
+
+	onClick() {
+		this.props.onNewColor(this.state.newColor);
+
+		this.setState({
+			newColor: ''
+		});
+	}
+
+	render() {
+		return <form>
+			<label htmlFor="new-color">New Color:</label>
+			<input type="text" id="new-color" name="newColor" onChange={this.onChange} value={this.state.newColor} />
+			<button type="button" onClick={this.onClick} className="btn btn-primary">Add Color</button>
+		</form>;
+	}
+}
+
 class ColorTool extends React.Component {
 
 	constructor(props) {
@@ -23,39 +74,23 @@ class ColorTool extends React.Component {
 		super(props);
 
 		this.state = {
-			newColor: '',
 			colors: props.colors.concat()
 		};
 
-		this.onChange = this.onChange.bind(this);
-		this.onClick = this.onClick.bind(this);
+		this.onNewColor = this.onNewColor.bind(this);
 	}
 
-	onChange(e) {
+	onNewColor(newColor) {
 		this.setState({
-			[e.target.name]: e.target.value
-		});
-
-		this.onClick();
-	}
-
-	onClick() {
-		this.setState({
-			colors: this.state.colors.concat(this.state.newColor)
+			colors: this.state.colors.concat(newColor)
 		});
 	}
 
 	render() {
 		return <div>
 			<ColorHeader toolHeader={this.props.toolHeader} />
-			<ul>
-				{this.state.colors.map(color => <li>{color}</li>)}
-			</ul>
-			<form>
-				<label htmlFor="new-color">New Color:</label>
-				<input type="text" id="new-color" name="newColor" onChange={this.onChange} value={this.state.newColor} />
-				<button type="button" onClick={this.onClick} className="btn btn-primary">Add Color</button>
-			</form>
+			<ColorList colors={this.state.colors} />
+			<ColorForm onNewColor={this.onNewColor} />
 		</div>;
 	}
 }
