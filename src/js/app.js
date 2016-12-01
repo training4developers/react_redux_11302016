@@ -1,6 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+class ColorHeader extends React.Component {
+
+	render() {
+
+		return <header>
+			<h1>{this.props.toolHeader}</h1>
+		</header>;
+
+	}
+}
+
+ColorHeader.propTypes = {
+	toolHeader: React.PropTypes.string
+};
+
 class ColorTool extends React.Component {
 
 	constructor(props) {
@@ -31,17 +46,8 @@ class ColorTool extends React.Component {
 	}
 
 	render() {
-
-		console.log('render');
-
-		//console.log(Object.isFrozen(this.props));
-		//this.props.toolHeader = 'New Tool Header';
-		//this.props.almostTimeForLunch = true;
-
 		return <div>
-			<header>
-				<h1>{this.props.toolHeader}</h1>
-			</header>
+			<ColorHeader toolHeader={this.props.toolHeader} />
 			<ul>
 				{this.state.colors.map(color => <li>{color}</li>)}
 			</ul>
@@ -55,7 +61,7 @@ class ColorTool extends React.Component {
 }
 
 ColorTool.defaultProps = {
-	toolHeader: 'Color List',
+	toolHeader: 'Color List!',
 	colors: []
 };
 
@@ -67,5 +73,7 @@ ColorTool.propTypes = {
 const colorList = ['red!','gold','green','white','black','blue','saffron'];
 
 ReactDOM.render(<ColorTool colors={colorList} />, document.querySelector('my-app'));
+
+
 
 
