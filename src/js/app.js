@@ -20,6 +20,8 @@ class ColorTool extends React.Component {
 		this.setState({
 			[e.target.name]: e.target.value
 		});
+
+		this.onClick();
 	}
 
 	onClick() {
@@ -46,14 +48,24 @@ class ColorTool extends React.Component {
 			<form>
 				<label htmlFor="new-color">New Color:</label>
 				<input type="text" id="new-color" name="newColor" onChange={this.onChange} value={this.state.newColor} />
-				<button type="button" onClick={this.onClick}>Add Color</button>
+				<button type="button" onClick={this.onClick} className="btn btn-primary">Add Color</button>
 			</form>
 		</div>;
 	}
 }
 
+ColorTool.defaultProps = {
+	toolHeader: 'Color List',
+	colors: []
+};
+
+ColorTool.propTypes = {
+	toolHeader: React.PropTypes.string.isRequired,
+	colors: React.PropTypes.array
+};
+
 const colorList = ['red!','gold','green','white','black','blue','saffron'];
 
-ReactDOM.render(<ColorTool colors={colorList} toolHeader="Color List!!!" />, document.querySelector('my-app'));
+ReactDOM.render(<ColorTool colors={colorList} />, document.querySelector('my-app'));
 
 
