@@ -49,6 +49,22 @@
       "size": "tiny",
       "quantity": 10,
       "ownerId": 3
+    },
+    {
+      "name": "test",
+      "description": "",
+      "color": "",
+      "size": "",
+      "quantity": 0,
+      "id": 5
+    },
+    {
+      "name": "",
+      "description": "",
+      "color": "",
+      "size": "",
+      "quantity": 0,
+      "id": 6
     }
   ],
   "people": [
