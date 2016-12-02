@@ -26,7 +26,6 @@ module.exports = {
 		root: path.join(__dirname, srcFolder, 'js')
 	},
 
-
 	module: {
 		loaders: [
 			// process all JavaScript files through the Babel preprocessor
@@ -45,6 +44,16 @@ module.exports = {
 			{ test: /\.scss$/, loaders: ['style','css','postcss','sass'] } 
 		]
 	},
+
+	// configuration for the postcss loader which modifies CSS after
+	// processing
+	// autoprefixer plugin for postcss adds vendor specific prefixing for
+	// non-standard or experimental css properties
+	postcss: [ require('autoprefixer') ],
+
+	// gives an annoying warning from postcss which cannot be resolved
+	// so we are choosing to ignore it
+	resolveUrlLoader: { silent: true },	
 
 	// copy image files, and the index.html file directly when they are changed
 	plugins: [

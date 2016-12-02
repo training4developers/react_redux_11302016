@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import { ColorTool } from './components/color-tool';
+import 'bootstrap-loader';
+import '../css/styles.scss';
 
-const colorList = ['red!','gold','green','white','black','blue','saffron'];
+export class WidgetTool extends Component {
 
-ReactDOM.render(<ColorTool colors={colorList} />, document.querySelector('my-app'));
+	render() {
+		return <div className="">Widget Tool</div>;
+	}
+
+}
+
+ReactDOM.render(<WidgetTool />, document.querySelector('my-app'));
 
 
 
