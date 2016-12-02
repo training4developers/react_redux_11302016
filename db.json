@@ -1,4 +1,8 @@
 {
+	"cars": [
+		{ "id": 1, "make": "Toyota" },
+		{ "id": 2, "make": "Honda" }
+	],
   "owners": [
     {
       "id": 1,
@@ -49,54 +53,6 @@
       "size": "tiny",
       "quantity": 10,
       "ownerId": 3
-    },
-    {
-      "name": "test",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 5
-    },
-    {
-      "name": "",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 6
-    },
-    {
-      "name": "test",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 7
-    },
-    {
-      "name": "test",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 8
-    },
-    {
-      "name": "test",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 9
-    },
-    {
-      "name": "test",
-      "description": "",
-      "color": "",
-      "size": "",
-      "quantity": 0,
-      "id": 10
     }
   ],
   "people": [

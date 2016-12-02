@@ -1,98 +1,95 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import keyMirror from 'key-mirror';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, bindActionCreators } from 'redux';
+import thunk from 'redux-thunk';
+import { connect } from 'react-redux';
 
 const actionTypes = keyMirror({
-	INCREMENT: null,
-	DECREMENT: null
+	REFRESH_WIDGETS_REQUEST: null,
+	REFRESH_WIDGETS_DONE: null,
+	INSERT_WIDGET_REQUEST: null
 });
 
-const createIncrementAction = amt => ({ type: actionTypes.INCREMENT, amt });
-const createDecrementAction = amt => ({ type: actionTypes.DECREMENT, amt });
+const createRefreshWidgetsRequestAction = () =>
+	({ type: actionTypes.REFRESH_WIDGETS_REQUEST, widgets: [] });
 
-// const createStore = (reducerFn) => {
+const createRefreshWidgetsDoneAction = widgets =>
+	({ type: actionTypes.REFRESH_WIDGETS_DONE, widgets });
 
-// 	let currentState = undefined;
-// 	const callbackFns = [];
+const createInsertWidgetRequestAction = widget =>
+	({ type: actionTypes.INSERT_WIDGET_REQUEST, widget });
 
-// 	currentState = reducerFn(currentState);
+const refreshWidgets = () => {
+	return dispatch => {
+		dispatch(createRefreshWidgetsRequestAction());
+		fetch('http://localhost:3010/widgets')
+			.then(res => res.json())
+			.then(widgets => dispatch(createRefreshWidgetsDoneAction(widgets)));
+	};
+};
 
-// 	return {
-// 		dispatch: (action) => {
-// 			currentState = reducerFn(currentState, action);
-// 			callbackFns.forEach(callbackFn => callbackFn());
-// 		},
-// 		subscribe: (componentCallbackFn) => {
-// 			callbackFns.push(componentCallbackFn);
-// 		},
-// 		getState: () => currentState
-// 	};
+const insertWidget = widget => {
 
-// };
+	return dispatch => {
+		dispatch(createInsertWidgetRequestAction(widget));
+		fetch('http://localhost:3010/widgets', {
+			method: 'POST',
+			headers: new Headers({ 'Content-Type': 'application/json' }),
+			mode: 'cors',
+			body: JSON.stringify(widget)
+		})
+			.then(() => fetch('http://localhost:3010/widgets'))
+			.then(res => res.json())
+			.then(widgets => dispatch(createRefreshWidgetsDoneAction(widgets)));
+	};
 
-const reducer = (state = 0, action) => {
+};
 
-	console.log(state, action);
+const reducer = (state = { loading: true, widgets: [] }, action) => {
 
 	switch (action.type) {
-		case actionTypes.INCREMENT:
-			return state + action.amt;
-		case actionTypes.DECREMENT:
-			return state - action.amt;
+		case actionTypes.REFRESH_WIDGETS_REQUEST:
+			return Object.assign({}, state, { loading: true, widgets: action.widgets });
+		case actionTypes.REFRESH_WIDGETS_DONE:
+			return Object.assign({}, state, { loading: false, widgets: action.widgets });
+		case actionTypes.INSERT_WIDGET_REQUEST:
+			return Object.assign({}, state, { loading: true  });		
 		default:
 			return state;
 	}
 
 };
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
-// store.subscribe(() => {
-// 	console.log(store.getState());
-// });
-
-// store.dispatch(createIncrementAction(2));
-// store.dispatch(createDecrementAction(1));
-// store.dispatch(createIncrementAction(5));
-// store.dispatch(createDecrementAction(3));
-// store.dispatch(createIncrementAction(7));
-
-export class Calculator extends Component {
-
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			currentValue: 0
-		};
-	}
-
-	componentDidMount() {
-		this.props.store.subscribe(() => {
-			this.setState({
-				currentValue: this.props.store.getState()
-			});
-		});
-	}
-
-	increment = () => {
-		this.props.store.dispatch(createIncrementAction(1));
-	};
-	
-	decrement = () => {
-		this.props.store.dispatch(createDecrementAction(1));
-	};
+class WidgetList extends Component {
 
 	render() {
+
 		return <div>
-			<span>Current Value: {this.state.currentValue}</span>
-			<button type="button" onClick={this.increment}>Increment</button>
-			<button type="button" onClick={this.decrement}>Decrement</button>
+			<ul>
+				{this.props.widgets.map(widget => <li>{widget.name}</li>)}
+			</ul>
+			<button type="button" onClick={this.props.refreshWidgets}
+				className="btn btn-primary">Refresh Widgets</button>
 		</div>;
 	}
-
 }
 
-ReactDOM.render(<Calculator store={store} />,
+WidgetList.propTypes = {
+	widgets: React.PropTypes.array,
+	refreshWidgets: React.PropTypes.func
+};
+
+const mapStateToProps = ({ loading, widgets }) => ({ loading, widgets });
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ refreshWidgets, insertWidget }, dispatch);
+};
+
+const WidgetListContainer =
+	connect(mapStateToProps, mapDispatchToProps)(WidgetList);
+
+ReactDOM.render(<WidgetListContainer store={store} />,
 	document.querySelector('my-app'));
