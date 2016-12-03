@@ -31,9 +31,10 @@ Breaks:
 - [Eric's Blog](http://t4d.io/)
 - [WintellectNOW](https://www.wintellectnow.com/Home/Instructor?instructorId=EricGreene) - Special Offer Code: GREENE-2016
 - [Microsoft Virtual Academy](https://mva.microsoft.com/search/SearchResults.aspx#!q=Eric%20Greene&lang=1033)
-- [React Blog Posts](https://github.com/training4developers/react-flux-blog)
+- [React Blog Posts - Post 4 - React Unit Tests](https://github.com/training4developers/react-flux-blog)
 - [TopTal Videos](https://www.toptal.com/videos)
 - [React SitePoint](http://www.sitepoint.com/author/ericgreene/)
+- [Redux Videos](https://egghead.io/courses/getting-started-with-redux)
 
 ### Other Resources
 
